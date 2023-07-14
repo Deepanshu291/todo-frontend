@@ -12,8 +12,6 @@ const Authcontext = createContext<authContext | null>(null)
 
 export const AuthProvider = ({children}:Props) =>{
     const [Authenticate, setAuthenticate] = useState(false)
-    // const navigate = useNavigate()
-    // const [User, setUser] = useState<Auth[]>([])
 
     const url = 'https://todoapi29.pythonanywhere.com/'
     const loginuser = async (Username:string,Password:string) =>{
@@ -42,13 +40,6 @@ export const AuthProvider = ({children}:Props) =>{
                     <Navigate to={'/login'} replace={true} />
                 }
             }
-            // if (res.status == 202) {
-            // console.log(res.data['access']);
-            // await localStorage.setItem('access-token',res.data['access'])
-            // await localStorage.setItem('refresh-token',res.data['refresh'])
-            // setAuthenticate(true)
-            // }
-            // await localStorage.removeItem('access-token')
         })
     }
 
@@ -63,7 +54,6 @@ export const AuthProvider = ({children}:Props) =>{
           }).then((res)=> {
             if (res.status == 202 ) {
             localStorage.removeItem('access-token')
-            const token2 = `Bearer ${localStorage.getItem('access-token')}`
             location.reload()
             setAuthenticate(false)
             }

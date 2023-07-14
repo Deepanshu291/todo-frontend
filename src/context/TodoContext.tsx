@@ -2,6 +2,7 @@
 import axios from "axios";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { TodoType, todoContext } from "../utils/types";
+import { UseAuth } from "./Authcontext";
 
 
 
@@ -9,12 +10,14 @@ export const TodoContext = createContext<todoContext | null>(null);
 
 export const TodoProvider = ({ children }: { children: ReactNode }) => {
     const [todos, setTodos] = useState([])
+    const {Authenticate} = UseAuth()
     const url = 'https://todoapi29.pythonanywhere.com/'
     const token = `Bearer ${localStorage.getItem('access-token')}`
    
+    
     useEffect(() => {
         getTodo()
-    }, [])
+    },[])
 
     
   
@@ -32,7 +35,7 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
         })
       } catch (error) {
           console.log(error);
-          if (!token) {
+          if (Authenticate) {
             getTodo()
           }
         //   getTodo()
