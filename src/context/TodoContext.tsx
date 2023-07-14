@@ -29,6 +29,7 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
         .then((res) => setTodos(res.data))
       } catch (error) {
           console.log(error);
+          getTodo()
       }
     } 
     

@@ -1,4 +1,3 @@
-// import {createContext, ReactNode, SyntheticEvent, useContext, useState} from "react";
 
 import axios from "axios"
 import {createContext, useState ,useContext} from "react"
@@ -22,9 +21,13 @@ export const AuthProvider = ({children}:Props) =>{
         }).then(async (res)=>{
             // await localStorage.removeItem('access-token')
             console.log(res.data['access']);
-            await localStorage.setItem('access-token',res.data['access'])
-            localStorage.setItem('refresh-token',res.data['refresh'])
+            const token = await localStorage.setItem('access-token',res.data['access'])
+            await localStorage.setItem('refresh-token',res.data['refresh'])
             setAuthenticate(true)
+            if (token != null) {
+                
+            }
+            
         })
     }
 
@@ -38,7 +41,12 @@ export const AuthProvider = ({children}:Props) =>{
             }
           }).then(()=> {
             localStorage.clear()
+            const token2 = `Bearer ${localStorage.getItem('access-token')}`
             setAuthenticate(false)
+            if (token2 == null) {
+                
+            }
+           
           })
         } catch (error) {
             console.log(error);
