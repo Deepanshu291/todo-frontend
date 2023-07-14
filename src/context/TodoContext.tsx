@@ -10,27 +10,34 @@ export const TodoContext = createContext<todoContext | null>(null);
 export const TodoProvider = ({ children }: { children: ReactNode }) => {
     const [todos, setTodos] = useState([])
     const url = 'https://todoapi29.pythonanywhere.com/'
-    
-   useEffect(() => {
-      getTodo()
+    const token = `Bearer ${localStorage.getItem('access-token')}`
+   
+    useEffect(() => {
+        getTodo()
     }, [])
 
-    const token = `Bearer ${localStorage.getItem('access-token')}`
+    
   
     const getTodo = async () =>{
       console.log(todos);
-      
+     
       try {
         await axios.get(url+"api/todo/",{
           headers:{
               'Authorization': token
           }
         })
-        .then((res) => setTodos(res.data))
+        .then((res) => {
+            setTodos(res.data)
+        })
       } catch (error) {
           console.log(error);
-          getTodo()
+          if (!token) {
+            getTodo()
+          }
+        //   getTodo()
       }
+   
     } 
     
     const handleAddTodo = async (newTodo:string) =>{

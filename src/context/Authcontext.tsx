@@ -2,6 +2,7 @@
 import axios from "axios"
 import {createContext, useState ,useContext} from "react"
 import { Props, authContext } from "../utils/types"
+import { Navigate } from "react-router-dom"
 
 
 
@@ -11,6 +12,7 @@ const Authcontext = createContext<authContext | null>(null)
 
 export const AuthProvider = ({children}:Props) =>{
     const [Authenticate, setAuthenticate] = useState(false)
+    // const navigate = useNavigate()
     // const [User, setUser] = useState<Auth[]>([])
 
     const url = 'https://todoapi29.pythonanywhere.com/'
@@ -19,15 +21,34 @@ export const AuthProvider = ({children}:Props) =>{
             username: Username,
             password:Password
         }).then(async (res)=>{
-            // await localStorage.removeItem('access-token')
-            console.log(res.data['access']);
-            const token = await localStorage.setItem('access-token',res.data['access'])
+            if (res.status == 202) {
+            // console.log(res.data['access']);
+            await localStorage.setItem('access-token',res.data['access'])
             await localStorage.setItem('refresh-token',res.data['refresh'])
             setAuthenticate(true)
-            if (token != null) {
-                
             }
-            
+            // await localStorage.removeItem('access-token')
+        })
+    }
+
+    const registeruser = async (Username:string,Password:string) =>{
+        await axios.post(url+"api/register/",{
+            username: Username,
+            password:Password
+        }).then(async (res)=>{
+            if (res.status == 201) {
+                {
+                    console.log(res.data);
+                    <Navigate to={'/login'} replace={true} />
+                }
+            }
+            // if (res.status == 202) {
+            // console.log(res.data['access']);
+            // await localStorage.setItem('access-token',res.data['access'])
+            // await localStorage.setItem('refresh-token',res.data['refresh'])
+            // setAuthenticate(true)
+            // }
+            // await localStorage.removeItem('access-token')
         })
     }
 
@@ -39,23 +60,29 @@ export const AuthProvider = ({children}:Props) =>{
             headers:{
                 'Authorization': token
             }
-          }).then(()=> {
-            localStorage.clear()
+          }).then((res)=> {
+            if (res.status == 202 ) {
+            localStorage.removeItem('access-token')
             const token2 = `Bearer ${localStorage.getItem('access-token')}`
+            location.reload()
             setAuthenticate(false)
-            if (token2 == null) {
-                
             }
+           
+           
            
           })
         } catch (error) {
             console.log(error);
         }
       } 
+
+      const token = localStorage.getItem('access-token')
       const context = {
         Authenticate,
         loginuser,
-        logout
+        logout,
+        registeruser,
+        token
       }
     
     return(

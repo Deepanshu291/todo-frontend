@@ -30,8 +30,11 @@ export type Token = {
 
 export type authContext = {
     Authenticate: boolean ;
+    token:string | null;
     loginuser:(username:string,password:string) =>void;
+    registeruser:(username:string,password:string) =>void;
     logout:() => void;
+
 }
 
 

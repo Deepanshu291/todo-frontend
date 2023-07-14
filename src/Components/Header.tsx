@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { UseAuth } from '../context/Authcontext'
 
 export const Header = () => {
-  const {Authenticate,logout} = UseAuth()
+  const {token,logout} = UseAuth()
   return (
     <div>
         <nav>
@@ -11,7 +11,7 @@ export const Header = () => {
             <ul>
                 <Link className='link' to="/">Home</Link>
                 <span> | </span>
-                {!Authenticate?<Link className='link' to="/register">Register</Link> :
+                {!token?<Link className='link' to="/register">Register</Link> :
                 <a className='link' onClick={logout}>Logout</a>
                 }
                 
