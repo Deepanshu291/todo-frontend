@@ -12,7 +12,6 @@ export type TodoType = {
     getTodo:()=>void;
     handleAddTodo: (task: string) => void;
     editTodo:(todo:TodoType,newTodo:string) => void;
-  //   toggleTodoAScompleted: (id:string) => void;
     deleteTodo: (id:string) => void;
   };
 
