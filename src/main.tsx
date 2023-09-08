@@ -4,17 +4,14 @@ import App from './App.tsx'
 import './index.css'
 import {BrowserRouter} from 'react-router-dom'
 
-import { AuthProvider } from './context/Authcontext.tsx'
 import { TodoProvider } from './context/TodoContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-    <AuthProvider>
     <TodoProvider>
     <App />
     </TodoProvider>
-    </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )

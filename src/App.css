@@ -58,3 +58,18 @@ nav ul{
 .read-the-docs {
   color: #888;
 }
+
+.todos{
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  justify-content: start;
+  align-items: start;
+}
+
+.todos li {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: start;
+}

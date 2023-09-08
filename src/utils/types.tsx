@@ -1,18 +1,19 @@
 import { ReactNode } from "react";
 
 export type TodoType = {
-    title: string;
-    uuid: string;
-    Is_done: boolean;
+    todo: string;
+    _id: string;
+    IsDone: boolean;
     createdAt: Date;
   };
   
   export type todoContext = {
     todos: TodoType[];
-    getTodo:()=>void;
+    getTodo: () => void;
     handleAddTodo: (task: string) => void;
-    editTodo:(todo:TodoType,newTodo:string) => void;
-    deleteTodo: (id:string) => void;
+    editTodo: (todo: TodoType, newTodo: string) => void;
+    deleteTodo: (id: string) => void;
+    ToggleIsDone:(id:string)=> void;
   };
 
   export type Auth ={

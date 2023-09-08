@@ -2,18 +2,15 @@
 import axios from "axios";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { TodoType, todoContext } from "../utils/types";
-import { UseAuth } from "./Authcontext";
+import { api } from "../utils/common";
 
 
 
 export const TodoContext = createContext<todoContext | null>(null);
 
 export const TodoProvider = ({ children }: { children: ReactNode }) => {
-    const [todos, setTodos] = useState([])
-    const {Authenticate} = UseAuth()
-    const url = 'https://todoapi29.pythonanywhere.com/'
-    const token = `Bearer ${localStorage.getItem('access-token')}`
-   
+    const [todos, setTodos] = useState<TodoType[]>([])
+    const url = "http://127.0.0.1:5500/api/";
     
     useEffect(() => {
         getTodo()
@@ -22,53 +19,46 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
     
   
     const getTodo = async () =>{
-      console.log(todos);
      
       try {
-        await axios.get(url+"api/todo/",{
-          headers:{
-              'Authorization': token
-          }
-        })
-        .then((res) => {
-            setTodos(res.data)
+        await api.get("api/").then((res)=>{
+           setTodos(res.data)
+           
         })
       } catch (error) {
           console.log(error);
-          if (Authenticate) {
-            getTodo()
-          }
-        //   getTodo()
       }
    
     } 
+
+    
     
     const handleAddTodo = async (newTodo:string) =>{
       try { 
-        await axios.post(url+`api/todo/`,{
-          title:newTodo
-        },{
-          headers:{
-              'Authorization': token
-          },
-        },
-        )
+        await api.post("api/",{
+          todo:newTodo
+        })
         getTodo()
       } catch (error) {
         console.log(error);
       }
     }
+
+    const ToggleIsDone =async (id:string) => {
+        try {
+          await axios.patch(url+id)
+          getTodo()
+        } catch (error) {
+          console.log(error);
+          
+        }
+    }
   
     const editTodo = async (todo:TodoType,newTodo: any) =>{
       try { 
-        await axios.patch(url+`api/todo/${todo.uuid}/`,{
-          title:newTodo
-        },{
-          headers:{
-              'Authorization': token
-          },
-        },
-        )
+        await axios.put(url + todo._id ,{
+          todo:newTodo
+        } )
         getTodo()
       } catch (error) {
         console.log(error);
@@ -77,11 +67,7 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
   
     const deleteTodo = async (id:String)=>{
       try {
-        await axios.delete(url+`api/todo/${id}/`,{
-          headers:{
-              'Authorization': token
-          }
-        })
+        await axios.delete(url + id);
         getTodo()
       } catch (error) {
         console.log(error);
@@ -93,7 +79,8 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
         editTodo,
         deleteTodo,
         handleAddTodo,
-        getTodo
+        getTodo,
+        ToggleIsDone
     }
 
 

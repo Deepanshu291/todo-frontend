@@ -1,11 +1,5 @@
-
-
 import { AddTodo } from '../Components/add-todo'
 import { Todo } from '../Components/Todos-bar'
-// import { TodosBar } from '../Components/Todos-bar'
-
-
-
 
 
 export const Homepage = () => (
@@ -18,6 +12,5 @@ export const Homepage = () => (
         </p>
         <AddTodo />
         <Todo />
-        {/* <TodosBar /> */}
     </>
 )
